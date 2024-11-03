@@ -24,10 +24,14 @@ public class ItemListener implements Listener {
             return;
         }
 
+        //Set block event
         if (lore.contains(ColorUtil.add("&eright click on the block to set"))) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                event.getPlayer().sendMessage("hola");
+                RaidEvent.getInstance().getItemManager().setBlockEvent(event.getClickedBlock().getLocation());
+                event.getPlayer().sendMessage(ColorUtil.add("&aBlock event has been set!"));
+                event.getPlayer().getInventory().remove(item);
             }
+            //Set region Corners
         } else if (lore.contains(ColorUtil.add("&6left click to set the minimum")) && lore.contains(ColorUtil.add("&eright click to set the maximum"))) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 event.getPlayer().sendMessage("pe");

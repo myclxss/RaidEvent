@@ -6,3 +6,8 @@ BOSSBAR:
 BLOCK:
   HEALTH: 20
   TYPE: GOLD_BLOCK
+  LOCATION:
+    X: 0
+    Y: 0
+    Z: 0
+    WORLD: world

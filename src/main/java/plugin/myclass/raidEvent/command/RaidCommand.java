@@ -29,7 +29,7 @@ public class RaidCommand implements CommandExecutor {
                 return true;
             }
             case "start" -> {
-                Location location = new Location(Bukkit.getWorld("world"), 0, 100, 0);
+                Location location = new Location(Bukkit.getWorld(RaidEvent.getInstance().getSettings().getString("BLOCK.LOCATION.WORLD")), RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.X"), RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.Y"), RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.Z"));
                 RaidEvent.getInstance().getEventManager().startEvent(location);
                 return true;
             }
