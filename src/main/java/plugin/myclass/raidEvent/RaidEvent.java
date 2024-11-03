@@ -5,7 +5,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import plugin.myclass.raidEvent.command.RaidCommand;
 import plugin.myclass.raidEvent.listener.BreakListener;
+import plugin.myclass.raidEvent.listener.ItemListener;
 import plugin.myclass.raidEvent.manager.EventManager;
+import plugin.myclass.raidEvent.manager.ItemManager;
 import plugin.myclass.raidEvent.utils.FileUtil;
 
 public final class RaidEvent extends JavaPlugin {
@@ -14,13 +16,16 @@ public final class RaidEvent extends JavaPlugin {
     private static RaidEvent instance;
 
     @Getter
-    EventManager eventManager;
-    @Getter
     FileUtil settings;
     @Getter
     FileUtil lang;
     @Getter
     FileUtil mobs;
+
+    @Getter
+    EventManager eventManager;
+    @Getter
+    ItemManager itemManager;
 
     @Override
     public void onEnable() {
@@ -31,10 +36,12 @@ public final class RaidEvent extends JavaPlugin {
         mobs = new FileUtil(this, "mobs");
 
         eventManager = new EventManager();
+        itemManager = new ItemManager();
 
         getCommand("raid").setExecutor(new RaidCommand());
 
         Bukkit.getPluginManager().registerEvents(new BreakListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ItemListener(), this);
     }
 
     @Override
