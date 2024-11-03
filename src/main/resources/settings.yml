@@ -1,0 +1,8 @@
+BOSSBAR:
+  TITLE: "&6&LRAID EVENT &7- &cPOINTS &8» &c%block_health%"
+  COLOR: "BLUE"
+  STYLE: "SOLID"
+
+BLOCK:
+  HEALTH: 20
+  TYPE: GOLD_BLOCK

@@ -1,0 +1,8 @@
+name: RaidEvent
+version: '1.0-SNAPSHOT'
+main: plugin.myclass.raidEvent.RaidEvent
+api-version: '1.20'
+
+commands:
+  raid:
+    description: Start a raid event

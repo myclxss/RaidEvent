@@ -1,0 +1,24 @@
+START-EVENT:
+  TITLE: "&cEvent"
+  SUBTITLE: "&7The event has started!"
+  MESSAGE:
+    - "&7The event has started!"
+    - "&7Good luck!"
+    - "&7You have 5 minutes to prepare!"
+  SOUND: "ENTITY_PLAYER_LEVELUP"
+
+STOP-EVENT:
+  TITLE: "&cEvent"
+  SUBTITLE: "&7The event has ended!"
+  MESSAGE:
+    - "&7The event has ended!"
+    - "&7Better luck next time!"
+  SOUND: "ENTITY_PLAYER_LEVELUP"
+
+WIN-EVENT:
+  TITLE: "&cEvent"
+  SUBTITLE: "&7You have won the event!"
+  MESSAGE:
+    - "&7You have won the event!"
+    - "&7Congratulations!"
+  SOUND: "ENTITY_PLAYER_LEVELUP"
