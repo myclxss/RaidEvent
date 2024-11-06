@@ -1,0 +1,33 @@
+MOB:
+  1:
+    TYPE: ZOMBIE
+    NAME: "Zombie"
+    AMOUNT: 10
+    HEALTH: 20
+    DAMAGE: 5
+    EFFECTS-MOB:
+      - "SLOW:1:100"
+      - "WEAKNESS:1:100"
+      - "BLINDNESS:1:100"
+      - "POISON:1:100"
+    EFFECTS-REGION:
+      - "SLOW:1:100"
+      - "WEAKNESS:1:100"
+      - "BLINDNESS:1:100"
+      - "POISON:1:100"
+  2:
+    TYPE: SKELETON
+    NAME: "Skeleton"
+    AMOUNT: 10
+    HEALTH: 20
+    DAMAGE: 5
+    EFFECTS-MOB:
+      - "SLOW:1:100"
+      - "WEAKNESS:1:100"
+      - "BLINDNESS:1:100"
+      - "POISON:1:100"
+    EFFECTS-REGION:
+      - "SLOW:1:100"
+      - "WEAKNESS:1:100"
+      - "BLINDNESS:1:100"
+      - "POISON:1:100"

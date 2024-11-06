@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/RaidEvent.main.iml" filepath="$PROJECT_DIR$/.idea/modules/RaidEvent.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/RaidEvent.test.iml" filepath="$PROJECT_DIR$/.idea/modules/RaidEvent.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin.myclass.RaidEvent.main.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin.myclass.RaidEvent.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin.myclass.RaidEvent.test.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin.myclass.RaidEvent.test.iml" />
     </modules>
   </component>
 </project>
