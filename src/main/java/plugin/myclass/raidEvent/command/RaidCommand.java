@@ -25,7 +25,6 @@ public class RaidCommand implements CommandExecutor {
         switch (args[0].toLowerCase()) {
             case "setup" -> {
                 player.getInventory().setItem(0, RaidEvent.getInstance().getItemManager().getBlockSetup());
-                player.getInventory().setItem(1, RaidEvent.getInstance().getItemManager().getCornerSetup());
                 return true;
             }
             case "start" -> {

@@ -15,18 +15,13 @@ public class ItemManager {
                 .build();
     }
 
-    public ItemStack getCornerSetup() {
-        return new ItemBuilder(Material.BLAZE_POWDER)
-                .setName("&c&lSET REGION CORNERS")
-                .setLore("&6left click to set the minimum", "&eright click to set the maximum")
-                .build();
-    }
-
     public void setBlockEvent(Location location) {
         RaidEvent.getInstance().getSettings().set("BLOCK.LOCATION.X", location.getBlockX());
         RaidEvent.getInstance().getSettings().set("BLOCK.LOCATION.Y", location.getBlockY());
         RaidEvent.getInstance().getSettings().set("BLOCK.LOCATION.Z", location.getBlockZ());
         RaidEvent.getInstance().getSettings().set("BLOCK.LOCATION.WORLD", location.getWorld().getName());
+        RaidEvent.getInstance().getSettings().set("BLOCK.LOCATION.YAW", location.getYaw());
+        RaidEvent.getInstance().getSettings().set("BLOCK.LOCATION.PITCH", location.getPitch());
         RaidEvent.getInstance().getSettings().set("BLOCK.TYPE", location.getBlock().getType().toString());
         RaidEvent.getInstance().getSettings().save();
         RaidEvent.getInstance().getSettings().reload();
