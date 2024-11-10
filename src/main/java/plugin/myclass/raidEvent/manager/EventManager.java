@@ -24,31 +24,10 @@ public class EventManager {
     private BukkitRunnable mobSpawnerTask;
 
     public void startEvent(Location location) {
-        raidBlock = location.getBlock();
-        raidBlock.setType(Material.valueOf(RaidEvent.getInstance().getSettings().getString("BLOCK.TYPE")));
-        blockHealth = RaidEvent.getInstance().getSettings().getInt("BLOCK.HEALTH");
-
-        Location displayLocation = location.clone();
-        blockDisplay = displayLocation.getWorld().spawn(displayLocation, BlockDisplay.class);
-        blockDisplay.setInvisible(true);
-        blockDisplay.setInvulnerable(true);
-        blockDisplay.setGlowing(true);
-        blockDisplay.setCustomNameVisible(false);
-        blockDisplay.setBlock(Bukkit.createBlockData(Material.valueOf(RaidEvent.getInstance().getSettings().getString("BLOCK.TYPE"))));
-        Transformation transformation = blockDisplay.getTransformation();
-        transformation.getScale().set(0.98f);
-        blockDisplay.setTransformation(transformation);
-
-        Location textLocation = location.clone().add(0.5, 1, 0.5);
-        textDisplay = textLocation.getWorld().spawn(textLocation, TextDisplay.class);
-        textDisplay.setCustomNameVisible(true);
-        textDisplay.setCustomName(ColorUtil.add(RaidEvent.getInstance().getSettings().getString("BLOCK.NAME")));
-
-        bossBar = Bukkit.createBossBar(
-                ColorUtil.add(RaidEvent.getInstance().getSettings().getString("BOSSBAR.TITLE").replace("%block_health%", String.valueOf(blockHealth))),
-                BarColor.valueOf(RaidEvent.getInstance().getSettings().getString("BOSSBAR.COLOR")),
-                BarStyle.valueOf(RaidEvent.getInstance().getSettings().getString("BOSSBAR.STYLE")));
-        bossBar.setProgress(1.0);
+        setupRaidBlock(location);
+        setupBlockDisplay(location);
+        setupTextDisplay(location);
+        setupBossBar();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             TitleUtil.sendTitle(player, RaidEvent.getInstance().getLang().getString("START-EVENT.TITLE"), RaidEvent.getInstance().getLang().getString("START-EVENT.SUBTITLE"), 20, 40, 20);
@@ -146,5 +125,47 @@ public class EventManager {
             }
         };
         mobSpawnerTask.runTaskTimer(RaidEvent.getInstance(), 0, spawnTaskIntervalTicks);
+    }
+
+    private void setupRaidBlock(Location location) {
+        raidBlock = location.getBlock();
+        raidBlock.setType(Material.valueOf(RaidEvent.getInstance().getSettings().getString("BLOCK.TYPE")));
+        blockHealth = RaidEvent.getInstance().getSettings().getInt("BLOCK.HEALTH");
+    }
+
+    private void setupBlockDisplay(Location location) {
+        Location displayLocation = location.clone();
+        blockDisplay = displayLocation.getWorld().spawn(displayLocation, BlockDisplay.class);
+        blockDisplay.setInvisible(true);
+        blockDisplay.setInvulnerable(true);
+        blockDisplay.setGlowing(true);
+        try {
+            String glowColorName = RaidEvent.getInstance().getSettings().getString("BLOCK.GLOW-COLOR");
+            Color glowColor = (Color) Color.class.getField(glowColorName.toUpperCase()).get(null);
+            blockDisplay.setGlowColorOverride(glowColor);
+        } catch (Exception e) {
+            Bukkit.getLogger().severe("Color invalido: " + e.getMessage());
+            blockDisplay.setGlowColorOverride(Color.RED); // Default color
+        }
+        blockDisplay.setCustomNameVisible(false);
+        blockDisplay.setBlock(Bukkit.createBlockData(Material.valueOf(RaidEvent.getInstance().getSettings().getString("BLOCK.TYPE"))));
+        Transformation transformation = blockDisplay.getTransformation();
+        transformation.getScale().set(0.98f);
+        blockDisplay.setTransformation(transformation);
+    }
+
+    private void setupTextDisplay(Location location) {
+        Location textLocation = location.clone().add(0.5, 1, 0.5);
+        textDisplay = textLocation.getWorld().spawn(textLocation, TextDisplay.class);
+        textDisplay.setCustomNameVisible(true);
+        textDisplay.setCustomName(ColorUtil.add(RaidEvent.getInstance().getSettings().getString("BLOCK.NAME")));
+    }
+
+    private void setupBossBar() {
+        bossBar = Bukkit.createBossBar(
+                ColorUtil.add(RaidEvent.getInstance().getSettings().getString("BOSSBAR.TITLE").replace("%block_health%", String.valueOf(blockHealth))),
+                BarColor.valueOf(RaidEvent.getInstance().getSettings().getString("BOSSBAR.COLOR")),
+                BarStyle.valueOf(RaidEvent.getInstance().getSettings().getString("BOSSBAR.STYLE")));
+        bossBar.setProgress(1.0);
     }
 }
