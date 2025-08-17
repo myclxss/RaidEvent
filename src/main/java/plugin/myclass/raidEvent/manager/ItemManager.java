@@ -15,6 +15,20 @@ public class ItemManager {
                 .build();
     }
 
+    public ItemStack getSpawnLocationAdder() {
+        return new ItemBuilder(Material.BLAZE_ROD)
+                .setName("&a&lADD SPAWN LOCATION")
+                .setLore("&eright click on a block to add spawn location")
+                .build();
+    }
+
+    public ItemStack getSpawnLocationViewer() {
+        return new ItemBuilder(Material.SOUL_LANTERN)
+                .setName("&b&lVIEW SPAWN LOCATIONS")
+                .setLore("&eright click to show soul circles")
+                .build();
+    }
+
     public void setBlockEvent(Location location) {
         RaidEvent.getInstance().getSettings().set("BLOCK.LOCATION.X", location.getBlockX());
         RaidEvent.getInstance().getSettings().set("BLOCK.LOCATION.Y", location.getBlockY());
@@ -25,5 +39,13 @@ public class ItemManager {
         RaidEvent.getInstance().getSettings().set("BLOCK.TYPE", location.getBlock().getType().toString());
         RaidEvent.getInstance().getSettings().save();
         RaidEvent.getInstance().getSettings().reload();
+    }
+
+    public void addSpawnLocation(Location location) {
+        RaidEvent.getInstance().getSpawnLocationManager().addSpawnLocation(location);
+    }
+
+    public boolean removeSpawnLocation(Location location) {
+        return RaidEvent.getInstance().getSpawnLocationManager().removeNearestSpawnLocation(location);
     }
 }

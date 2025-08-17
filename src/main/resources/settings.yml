@@ -1,3 +1,4 @@
+# Configuración original (mantener como está)
 BOSSBAR:
   TITLE: "&6&LRAID EVENT &7- &cPOINTS &8» &c%block_health%"
   COLOR: "BLUE"
@@ -18,5 +19,501 @@ BLOCK:
     PITCH: 0
     WORLD: world
 
+# Configuración de mobs con targeting aumentado
 MOB:
   SPAWN-TASK: 120
+  TARGET-RANGE: 32.0    # Rango para detectar jugadores (bloques)
+  FOLLOW-RANGE: 40.0    # Rango de seguimiento (bloques)
+
+# ================================
+# SISTEMA DE OLEADAS
+# ================================
+
+WAVES:
+  # Oleada 1 - Tutorial/Fácil
+  WAVE-1:
+    NAME: "&e&lOLEADA 1 &7- &aFácil"
+    TYPE: GOLD_BLOCK
+    HEALTH: 15
+    PARTICLE: HEART
+    SOUND: "minecraft:entity.player.hurt"
+    GLOW-COLOR: YELLOW
+    BOSSBAR:
+      TITLE: "&e&lOLEADA 1 &7- &c%block_health% HP"
+      COLOR: "GREEN"
+      STYLE: "SOLID"
+    MOBS:
+      zombie:
+        TYPE: ZOMBIE
+        NAME: "&2Zombie Débil"
+        AMOUNT: 3
+        HEALTH: 15
+        DAMAGE: 3
+        SPAWN-RADIUS: 5
+        EFFECTS-MOB:
+          - "SLOW:0:999999"
+        HIT-EFFECTS:
+          - "POISON:0:60"
+
+  # Oleada 2
+  WAVE-2:
+    NAME: "&6&lOLEADA 2 &7- &eMedio"
+    TYPE: IRON_BLOCK
+    HEALTH: 25
+    PARTICLE: FLAME
+    SOUND: "minecraft:entity.blaze.hurt"
+    GLOW-COLOR: ORANGE
+    BOSSBAR:
+      TITLE: "&6&lOLEADA 2 &7- &c%block_health% HP"
+      COLOR: "YELLOW"
+      STYLE: "SOLID"
+    MOBS:
+      zombie:
+        TYPE: ZOMBIE
+        NAME: "&2Zombie Guerrero"
+        AMOUNT: 4
+        HEALTH: 20
+        DAMAGE: 4
+        SPAWN-RADIUS: 6
+        EFFECTS-MOB:
+          - "SPEED:0:999999"
+        HIT-EFFECTS:
+          - "POISON:1:80"
+          - "SLOW:0:40"
+      skeleton:
+        TYPE: SKELETON
+        NAME: "&fEsqueleto Arquero"
+        AMOUNT: 2
+        HEALTH: 18
+        DAMAGE: 5
+        SPAWN-RADIUS: 8
+        EFFECTS-MOB:
+          - "SPEED:0:999999"
+        HIT-EFFECTS:
+          - "SLOWNESS:1:60"
+
+  # Oleada 3
+  WAVE-3:
+    NAME: "&c&lOLEADA 3 &7- &6Difícil"
+    TYPE: DIAMOND_BLOCK
+    HEALTH: 35
+    PARTICLE: SOUL_FIRE_FLAME
+    SOUND: "minecraft:entity.wither.hurt"
+    GLOW-COLOR: BLUE
+    BOSSBAR:
+      TITLE: "&c&lOLEADA 3 &7- &c%block_health% HP"
+      COLOR: "RED"
+      STYLE: "SEGMENTED_6"
+    MOBS:
+      zombie:
+        TYPE: ZOMBIE
+        NAME: "&4Zombie Élite"
+        AMOUNT: 5
+        HEALTH: 25
+        DAMAGE: 6
+        SPAWN-RADIUS: 6
+        EFFECTS-MOB:
+          - "SPEED:1:999999"
+          - "STRENGTH:0:999999"
+        HIT-EFFECTS:
+          - "POISON:2:100"
+          - "WEAKNESS:1:80"
+      skeleton:
+        TYPE: SKELETON
+        NAME: "&fEsqueleto Élite"
+        AMOUNT: 3
+        HEALTH: 22
+        DAMAGE: 7
+        SPAWN-RADIUS: 8
+        EFFECTS-MOB:
+          - "SPEED:1:999999"
+        HIT-EFFECTS:
+          - "SLOWNESS:2:80"
+      spider:
+        TYPE: SPIDER
+        NAME: "&8Araña Venenosa"
+        AMOUNT: 2
+        HEALTH: 20
+        DAMAGE: 5
+        SPAWN-RADIUS: 7
+        EFFECTS-MOB:
+          - "SPEED:2:999999"
+          - "JUMP:2:999999"
+        HIT-EFFECTS:
+          - "POISON:2:120"
+          - "NAUSEA:0:100"
+
+  # Oleada 4
+  WAVE-4:
+    NAME: "&5&lOLEADA 4 &7- &dExperto"
+    TYPE: EMERALD_BLOCK
+    HEALTH: 40
+    PARTICLE: ENCHANTMENT_TABLE
+    SOUND: ENTITY_ENDERMAN_HURT
+    GLOW-COLOR: PURPLE
+    BOSSBAR:
+      TITLE: "&5&lOLEADA 4 &7- &c%block_health% HP"
+      COLOR: "PURPLE"
+      STYLE: "SEGMENTED_10"
+    MOBS:
+      creeper:
+        TYPE: CREEPER
+        NAME: "&2Creeper Explosivo"
+        AMOUNT: 3
+        HEALTH: 30
+        DAMAGE: 8
+        SPAWN-RADIUS: 8
+        EFFECTS-MOB:
+          - "SPEED:1:999999"
+        HIT-EFFECTS:
+          - "SLOWNESS:2:100"
+      enderman:
+        TYPE: ENDERMAN
+        NAME: "&8Enderman Guardián"
+        AMOUNT: 2
+        HEALTH: 40
+        DAMAGE: 10
+        SPAWN-RADIUS: 10
+        EFFECTS-MOB:
+          - "SPEED:0:999999"
+        HIT-EFFECTS:
+          - "BLINDNESS:0:80"
+          - "NAUSEA:1:60"
+
+  # Oleada 5
+  WAVE-5:
+    NAME: "&4&lOLEADA 5 &7- &cMaestro"
+    TYPE: NETHERITE_BLOCK
+    HEALTH: 50
+    PARTICLE: LAVA
+    SOUND: ENTITY_BLAZE_AMBIENT
+    GLOW-COLOR: RED
+    BOSSBAR:
+      TITLE: "&4&lOLEADA 5 &7- &c%block_health% HP"
+      COLOR: "RED"
+      STYLE: "SEGMENTED_12"
+    MOBS:
+      blaze:
+        TYPE: BLAZE
+        NAME: "&6Blaze Infernal"
+        AMOUNT: 4
+        HEALTH: 35
+        DAMAGE: 12
+        SPAWN-RADIUS: 8
+        EFFECTS-MOB:
+          - "FIRE_RESISTANCE:0:999999"
+          - "SPEED:1:999999"
+        HIT-EFFECTS:
+          - "FIRE_ASPECT:1:100"
+          - "WEAKNESS:2:120"
+      wither_skeleton:
+        TYPE: WITHER_SKELETON
+        NAME: "&8Esqueleto Wither"
+        AMOUNT: 2
+        HEALTH: 45
+        DAMAGE: 15
+        SPAWN-RADIUS: 9
+        EFFECTS-MOB:
+          - "FIRE_RESISTANCE:0:999999"
+          - "STRENGTH:1:999999"
+        HIT-EFFECTS:
+          - "WITHER:1:100"
+          - "SLOWNESS:2:120"
+
+  # Oleada 6
+  WAVE-6:
+    NAME: "&1&lOLEADA 6 &7- &9Legendario"
+    TYPE: BEACON
+    HEALTH: 60
+    PARTICLE: END_ROD
+    SOUND: ENTITY_WITHER_SPAWN
+    GLOW-COLOR: BLUE
+    BOSSBAR:
+      TITLE: "&1&lOLEADA 6 &7- &c%block_health% HP"
+      COLOR: "BLUE"
+      STYLE: "SEGMENTED_20"
+    MOBS:
+      zombie:
+        TYPE: ZOMBIE
+        NAME: "&4Zombie Campeón"
+        AMOUNT: 6
+        HEALTH: 40
+        DAMAGE: 10
+        SPAWN-RADIUS: 8
+        EFFECTS-MOB:
+          - "SPEED:2:999999"
+          - "STRENGTH:1:999999"
+          - "RESISTANCE:1:999999"
+        HIT-EFFECTS:
+          - "POISON:3:140"
+          - "WEAKNESS:2:100"
+          - "SLOWNESS:3:100"
+      skeleton:
+        TYPE: SKELETON
+        NAME: "&fArquero Maestro"
+        AMOUNT: 4
+        HEALTH: 35
+        DAMAGE: 12
+        SPAWN-RADIUS: 10
+        EFFECTS-MOB:
+          - "SPEED:2:999999"
+          - "RESISTANCE:0:999999"
+        HIT-EFFECTS:
+          - "SLOWNESS:3:120"
+          - "BLINDNESS:1:80"
+      creeper:
+        TYPE: CREEPER
+        NAME: "&2Creeper Cargado"
+        AMOUNT: 3
+        HEALTH: 50
+        DAMAGE: 15
+        SPAWN-RADIUS: 9
+        EFFECTS-MOB:
+          - "SPEED:1:999999"
+          - "RESISTANCE:1:999999"
+        HIT-EFFECTS:
+          - "SLOWNESS:3:140"
+          - "NAUSEA:2:100"
+
+  # Oleada 7
+  WAVE-7:
+    NAME: "&d&lOLEADA 7 &7- &5Épico"
+    TYPE: CRYING_OBSIDIAN
+    HEALTH: 70
+    PARTICLE: DRAGON_BREATH
+    SOUND: ENTITY_ENDER_DRAGON_GROWL
+    GLOW-COLOR: PURPLE
+    BOSSBAR:
+      TITLE: "&d&lOLEADA 7 &7- &c%block_health% HP"
+      COLOR: "PINK"
+      STYLE: "SEGMENTED_20"
+    MOBS:
+      enderman:
+        TYPE: ENDERMAN
+        NAME: "&8Enderman Élite"
+        AMOUNT: 5
+        HEALTH: 60
+        DAMAGE: 18
+        SPAWN-RADIUS: 12
+        EFFECTS-MOB:
+          - "SPEED:2:999999"
+          - "STRENGTH:2:999999"
+          - "RESISTANCE:1:999999"
+        HIT-EFFECTS:
+          - "BLINDNESS:2:120"
+          - "NAUSEA:2:100"
+          - "LEVITATION:0:40"
+      witch:
+        TYPE: WITCH
+        NAME: "&5Bruja Maligna"
+        AMOUNT: 3
+        HEALTH: 45
+        DAMAGE: 12
+        SPAWN-RADIUS: 10
+        EFFECTS-MOB:
+          - "SPEED:1:999999"
+          - "RESISTANCE:2:999999"
+        HIT-EFFECTS:
+          - "POISON:4:160"
+          - "WEAKNESS:3:140"
+          - "SLOWNESS:4:120"
+      blaze:
+        TYPE: BLAZE
+        NAME: "&6Blaze Supremo"
+        AMOUNT: 4
+        HEALTH: 50
+        DAMAGE: 16
+        SPAWN-RADIUS: 9
+        EFFECTS-MOB:
+          - "FIRE_RESISTANCE:0:999999"
+          - "SPEED:2:999999"
+          - "STRENGTH:1:999999"
+        HIT-EFFECTS:
+          - "FIRE_ASPECT:2:120"
+          - "WEAKNESS:3:140"
+
+  # Oleada 8
+  WAVE-8:
+    NAME: "&c&lOLEADA 8 &7- &4Mítico"
+    TYPE: RESPAWN_ANCHOR
+    HEALTH: 80
+    PARTICLE: SOUL
+    SOUND: ENTITY_WITHER_AMBIENT
+    GLOW-COLOR: RED
+    BOSSBAR:
+      TITLE: "&c&lOLEADA 8 &7- &c%block_health% HP"
+      COLOR: "RED"
+      STYLE: "SEGMENTED_20"
+    MOBS:
+      wither_skeleton:
+        TYPE: WITHER_SKELETON
+        NAME: "&8Wither Guardián"
+        AMOUNT: 6
+        HEALTH: 70
+        DAMAGE: 22
+        SPAWN-RADIUS: 10
+        EFFECTS-MOB:
+          - "FIRE_RESISTANCE:0:999999"
+          - "SPEED:2:999999"
+          - "STRENGTH:2:999999"
+          - "RESISTANCE:2:999999"
+        HIT-EFFECTS:
+          - "WITHER:2:140"
+          - "WEAKNESS:4:160"
+          - "SLOWNESS:4:140"
+      piglin_brute:
+        TYPE: PIGLIN_BRUTE
+        NAME: "&6Piglin Berserker"
+        AMOUNT: 4
+        HEALTH: 80
+        DAMAGE: 25
+        SPAWN-RADIUS: 8
+        EFFECTS-MOB:
+          - "FIRE_RESISTANCE:0:999999"
+          - "SPEED:2:999999"
+          - "STRENGTH:3:999999"
+          - "RESISTANCE:2:999999"
+        HIT-EFFECTS:
+          - "WEAKNESS:4:180"
+          - "SLOWNESS:5:160"
+          - "NAUSEA:3:120"
+      ghast:
+        TYPE: GHAST
+        NAME: "&fGhast Terrorífico"
+        AMOUNT: 2
+        HEALTH: 60
+        DAMAGE: 20
+        SPAWN-RADIUS: 15
+        EFFECTS-MOB:
+          - "FIRE_RESISTANCE:0:999999"
+          - "RESISTANCE:3:999999"
+        HIT-EFFECTS:
+          - "LEVITATION:2:80"
+          - "SLOWNESS:5:160"
+
+  # Oleada 9
+  WAVE-9:
+    NAME: "&8&lOLEADA 9 &7- &0Abismal"
+    TYPE: END_STONE
+    HEALTH: 90
+    PARTICLE: REVERSE_PORTAL
+    SOUND: ENTITY_ENDER_DRAGON_HURT
+    GLOW-COLOR: BLACK
+    BOSSBAR:
+      TITLE: "&8&lOLEADA 9 &7- &c%block_health% HP"
+      COLOR: "WHITE"
+      STYLE: "SEGMENTED_20"
+    MOBS:
+      enderman:
+        TYPE: ENDERMAN
+        NAME: "&8Enderman Supremo"
+        AMOUNT: 8
+        HEALTH: 90
+        DAMAGE: 28
+        SPAWN-RADIUS: 12
+        EFFECTS-MOB:
+          - "SPEED:3:999999"
+          - "STRENGTH:3:999999"
+          - "RESISTANCE:3:999999"
+          - "REGENERATION:1:999999"
+        HIT-EFFECTS:
+          - "BLINDNESS:3:160"
+          - "NAUSEA:4:140"
+          - "LEVITATION:1:60"
+          - "WEAKNESS:5:200"
+      shulker:
+        TYPE: SHULKER
+        NAME: "&5Shulker Guardián"
+        AMOUNT: 3
+        HEALTH: 60
+        DAMAGE: 20
+        SPAWN-RADIUS: 10
+        EFFECTS-MOB:
+          - "RESISTANCE:4:999999"
+        HIT-EFFECTS:
+          - "LEVITATION:3:100"
+          - "SLOWNESS:5:180"
+      phantom:
+        TYPE: PHANTOM
+        NAME: "&9Phantom Nocturno"
+        AMOUNT: 5
+        HEALTH: 40
+        DAMAGE: 15
+        SPAWN-RADIUS: 15
+        EFFECTS-MOB:
+          - "SPEED:3:999999"
+          - "RESISTANCE:2:999999"
+        HIT-EFFECTS:
+          - "LEVITATION:2:80"
+          - "NAUSEA:3:120"
+          - "BLINDNESS:2:100"
+
+  # Oleada 10 - FINAL BOSS
+  WAVE-10:
+    NAME: "&4&k|||&r &4&lOLEADA FINAL &4&k|||"
+    TYPE: DRAGON_EGG
+    HEALTH: 100
+    PARTICLE: EXPLOSION_LARGE
+    SOUND: ENTITY_ENDER_DRAGON_ROAR
+    GLOW-COLOR: RED
+    BOSSBAR:
+      TITLE: "&4&lBOSS FINAL &7- &c%block_health% HP"
+      COLOR: "RED"
+      STYLE: "SEGMENTED_20"
+    MOBS:
+      wither_skeleton:
+        TYPE: WITHER_SKELETON
+        NAME: "&8&lSeñor Wither"
+        AMOUNT: 10
+        HEALTH: 120
+        DAMAGE: 35
+        SPAWN-RADIUS: 10
+        EFFECTS-MOB:
+          - "FIRE_RESISTANCE:0:999999"
+          - "SPEED:3:999999"
+          - "STRENGTH:4:999999"
+          - "RESISTANCE:4:999999"
+          - "REGENERATION:2:999999"
+        HIT-EFFECTS:
+          - "WITHER:3:180"
+          - "WEAKNESS:5:240"
+          - "SLOWNESS:5:200"
+          - "BLINDNESS:2:120"
+      enderman:
+        TYPE: ENDERMAN
+        NAME: "&8&lSeñor del End"
+        AMOUNT: 6
+        HEALTH: 150
+        DAMAGE: 40
+        SPAWN-RADIUS: 12
+        EFFECTS-MOB:
+          - "SPEED:4:999999"
+          - "STRENGTH:4:999999"
+          - "RESISTANCE:4:999999"
+          - "REGENERATION:3:999999"
+        HIT-EFFECTS:
+          - "BLINDNESS:4:180"
+          - "NAUSEA:5:160"
+          - "LEVITATION:2:80"
+          - "WEAKNESS:5:260"
+      ender_dragon:
+        TYPE: ENDER_DRAGON
+        NAME: "&5&lDragón del Apocalipsis"
+        AMOUNT: 1
+        HEALTH: 300
+        DAMAGE: 50
+        SPAWN-RADIUS: 20
+        EFFECTS-MOB:
+          - "FIRE_RESISTANCE:0:999999"
+          - "RESISTANCE:5:999999"
+          - "REGENERATION:3:999999"
+          - "STRENGTH:5:999999"
+        HIT-EFFECTS:
+          - "WITHER:4:200"
+          - "POISON:5:200"
+          - "WEAKNESS:5:300"
+          - "SLOWNESS:5:240"
+          - "BLINDNESS:3:160"
+          - "NAUSEA:5:180"
+          -
+SPAWN-LOCATIONS: []

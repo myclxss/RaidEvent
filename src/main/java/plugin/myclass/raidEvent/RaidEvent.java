@@ -10,6 +10,7 @@ import plugin.myclass.raidEvent.listener.MobListener;
 import plugin.myclass.raidEvent.manager.EventManager;
 import plugin.myclass.raidEvent.manager.ItemManager;
 import plugin.myclass.raidEvent.manager.MobManager;
+import plugin.myclass.raidEvent.manager.SpawnLocationManager;
 import plugin.myclass.raidEvent.utils.FileUtil;
 
 public final class RaidEvent extends JavaPlugin {
@@ -30,6 +31,8 @@ public final class RaidEvent extends JavaPlugin {
     ItemManager itemManager;
     @Getter
     MobManager mobManager;
+    @Getter
+    SpawnLocationManager spawnLocationManager;
 
     @Override
     public void onEnable() {
@@ -42,6 +45,10 @@ public final class RaidEvent extends JavaPlugin {
         eventManager = new EventManager();
         itemManager = new ItemManager();
         mobManager = new MobManager();
+        spawnLocationManager = new SpawnLocationManager();
+
+        // Cargar spawn locations
+        spawnLocationManager.loadSpawnLocations();
 
         getCommand("raid").setExecutor(new RaidCommand());
 
@@ -52,5 +59,9 @@ public final class RaidEvent extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // Detener efectos de partículas al desactivar
+        if (spawnLocationManager != null) {
+            spawnLocationManager.stopParticleEffects();
+        }
     }
 }

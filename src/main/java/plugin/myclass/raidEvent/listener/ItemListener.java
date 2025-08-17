@@ -24,12 +24,34 @@ public class ItemListener implements Listener {
             return;
         }
 
-        //Set block event
+        // Set block event
         if (lore.contains(ColorUtil.add("&eright click on the block to set"))) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 RaidEvent.getInstance().getItemManager().setBlockEvent(event.getClickedBlock().getLocation());
                 event.getPlayer().sendMessage(ColorUtil.add("&aBlock event has been set!"));
                 event.getPlayer().getInventory().remove(item);
+            }
+        }
+
+        // Add spawn location
+        else if (lore.contains(ColorUtil.add("&eright click on a block to add spawn location"))) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                RaidEvent.getInstance().getItemManager().addSpawnLocation(event.getClickedBlock().getLocation());
+                event.getPlayer().sendMessage(ColorUtil.add("&aSpawn location added! Total: &e" +
+                        RaidEvent.getInstance().getSpawnLocationManager().getSpawnLocationCount()));
+            }
+        }
+
+        // View spawn locations
+        else if (lore.contains(ColorUtil.add("&eright click to show soul circles"))) {
+            if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                if (RaidEvent.getInstance().getSpawnLocationManager().hasSpawnLocations()) {
+                    RaidEvent.getInstance().getSpawnLocationManager().startParticleEffects();
+                    event.getPlayer().sendMessage(ColorUtil.add("&aSoul circles enabled! Locations: &e" +
+                            RaidEvent.getInstance().getSpawnLocationManager().getSpawnLocationCount()));
+                } else {
+                    event.getPlayer().sendMessage(ColorUtil.add("&cNo spawn locations configured!"));
+                }
             }
         }
     }

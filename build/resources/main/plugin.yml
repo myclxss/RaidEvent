@@ -2,7 +2,64 @@ name: RaidEvent
 version: '1.0-SNAPSHOT'
 main: plugin.myclass.raidEvent.RaidEvent
 api-version: '1.21'
+author: YourName
+description: Sistema de eventos de oleadas con núcleos destructibles
 
 commands:
   raid:
-    description: Start a raid event
+    description: Comandos principales del evento de raid
+    usage: /<command> [setup|start|stop|reload|info|status]
+    aliases: [raidevent, re]
+
+permissions:
+  raidevent.*:
+    description: Acceso completo al plugin
+    children:
+      raidevent.admin: true
+      raidevent.player: true
+    default: op
+
+  raidevent.admin:
+    description: Comandos de administración
+    default: op
+    children:
+      raidevent.setup: true
+      raidevent.start: true
+      raidevent.stop: true
+      raidevent.reload: true
+      raidevent.force-wave: true
+
+  raidevent.player:
+    description: Comandos básicos para jugadores
+    default: true
+    children:
+      raidevent.info: true
+      raidevent.status: true
+
+  raidevent.setup:
+    description: Usar herramienta de configuración
+    default: op
+
+  raidevent.start:
+    description: Iniciar eventos
+    default: op
+
+  raidevent.stop:
+    description: Detener eventos
+    default: op
+
+  raidevent.reload:
+    description: Recargar configuración
+    default: op
+
+  raidevent.info:
+    description: Ver información del evento
+    default: true
+
+  raidevent.status:
+    description: Ver estado del evento
+    default: true
+
+  raidevent.force-wave:
+    description: Forzar oleada específica
+    default: op

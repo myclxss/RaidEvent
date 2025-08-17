@@ -1,26 +1,87 @@
+# Mensajes del evento original
 START-EVENT:
-  TITLE: "&cEvent"
-  SUBTITLE: "&7The event has started!"
+  TITLE: "&6&lRAID EVENT"
+  SUBTITLE: "&7¡El evento ha comenzado!"
   MESSAGE:
     - "&7◿_____________________◺"
-    - "&7The event has start!"
+    - "&e¡El evento de oleadas ha comenzado!"
+    - "&7Oleada actual: &c%wave% &7de &c%max_waves%"
+    - "&7¡Destruye el núcleo para ganar!"
     - "&7_______________________"
-  SOUND: "ENTITY_PLAYER_LEVELUP"
+  SOUND: "minecraft:entity.player.levelup"
 
 STOP-EVENT:
-  TITLE: "&cEvent"
-  SUBTITLE: "&7The event has ended!"
+  TITLE: "&c&lEVENTO DETENIDO"
+  SUBTITLE: "&7El evento ha sido detenido"
   MESSAGE:
     - "&7◿_____________________◺"
-    - "&7The event has stoped!"
+    - "&c¡El evento ha sido detenido!"
     - "&7_______________________"
-  SOUND: "ENTITY_PLAYER_LEVELUP"
+  SOUND: "minecraft:block.note_block.bass"
 
 WIN-EVENT:
-  TITLE: "&cEvent"
-  SUBTITLE: "&7You have won the event!"
+  TITLE: "&a&l¡VICTORIA!"
+  SUBTITLE: "&7¡Has completado todas las oleadas!"
   MESSAGE:
     - "&7◿_____________________◺"
-    - "&7The event has end!"
+    - "&a&l¡FELICIDADES!"
+    - "&7¡Has completado todas las oleadas!"
+    - "&e¡Aquí están los mejores jugadores!"
     - "&7_______________________"
-  SOUND: "ENTITY_PLAYER_LEVELUP"
+  SOUND: "minecraft:ui.toast.challenge_complete"
+
+# Mensajes específicos de oleadas
+WAVE-START:
+  MESSAGE:
+    - "&7◿_____________________◺"
+    - "&e¡Oleada &c%wave% &ede &c%max_waves% &eha comenzado!"
+    - "&7¡Destruye el núcleo para continuar!"
+    - "&7_______________________"
+
+WAVE-COMPLETE:
+  MESSAGE:
+    - "&7◿_____________________◺"
+    - "&a¡Oleada &c%wave% &acompletada!"
+    - "&7Preparándose para la siguiente oleada..."
+    - "&7_______________________"
+
+WAVE-TRANSITION:
+  TITLE: "&e&lOLEADA COMPLETADA"
+  SUBTITLE: "&7Preparando oleada %next_wave%..."
+  MESSAGE:
+    - "&7◿_____________________◺"
+    - "&a¡Oleada &c%current_wave% &acompletada!"
+    - "&ePreparando oleada &c%next_wave% &een 5 segundos..."
+    - "&7_______________________"
+
+WAVE-COUNTDOWN:
+  MESSAGE: "&e⏰ Oleada &c%next_wave% &einicia en &c%countdown% &esegundos..."
+
+# Top de jugadores
+TOP-PLAYERS:
+  MESSAGE:
+    - "&7◿_____________________◺"
+    - "&6&l🏆 TOP 3 JUGADORES 🏆"
+    - "&7Los jugadores que más daño hicieron:"
+    - ""
+  POSITION: "&e%position%° &7- &f%player% &7con &c%damage% &7de daño"
+
+# Mensajes de error/información
+ERROR:
+  EVENT-ALREADY-ACTIVE: "&cEl evento ya está activo!"
+  EVENT-NOT-ACTIVE: "&cNo hay ningún evento activo!"
+  NO-PERMISSION: "&cNo tienes permisos para usar este comando!"
+  LOCATION-NOT-SET: "&cPrimero debes configurar la ubicación del evento!"
+
+SUCCESS:
+  EVENT-STARTED: "&a¡Evento iniciado exitosamente!"
+  EVENT-STOPPED: "&a¡Evento detenido exitosamente!"
+  CONFIG-RELOADED: "&a¡Configuración recargada exitosamente!"
+  LOCATION-SET: "&a¡Ubicación del evento configurada!"
+
+# Mensajes adicionales
+INFO:
+  CURRENT-WAVE: "&7Oleada actual: &c%wave% &7de &c%max_waves%"
+  BLOCK-HEALTH: "&7Vida del núcleo: &c%health%"
+  EVENT-STATUS: "&7Estado del evento: %status%"
+  PLAYERS-ONLINE: "&7Jugadores conectados: &c%players%"

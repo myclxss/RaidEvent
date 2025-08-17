@@ -1,2 +1,2 @@
 Command: C:\Users\Anhuar\.jdks\corretto-21.0.8\bin\java.exe -Xmx1G -classpath C:\Users\Anhuar\.gradle\caches\modules-2\files-2.1\net.fabricmc\tiny-remapper\0.11.1\6c1f29838864ba8f495855edfc8ef17706fedb5d\tiny-remapper-0.11.1-fat.jar net.fabricmc.tinyremapper.Main C:\Users\Anhuar\Documents\work\personal\RaidEvent\build\libs\RaidEvent-1.0-SNAPSHOT-dev.jar C:\Users\Anhuar\Documents\work\personal\RaidEvent\build\libs\RaidEvent-1.0-SNAPSHOT.jar C:\Users\Anhuar\Documents\work\personal\RaidEvent\.gradle\caches\paperweight\taskCache\reobfMappings.tiny mojang spigot C:\Users\Anhuar\Documents\work\personal\RaidEvent\.gradle\caches\paperweight\taskCache\mappedServerJar.jar --threads=1
-[INFO] Finished after 2593.14 ms.
+[INFO] Finished after 2407.71 ms.
