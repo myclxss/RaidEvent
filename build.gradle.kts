@@ -1,53 +1,32 @@
 plugins {
-    `java-library`
-    id("io.papermc.paperweight.userdev") version "1.7.2"
+    id("java")
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.17"
+    id("com.gradleup.shadow") version "9.0.0-beta13"
 }
 
 group = "plugin.myclass"
-version = "1.0.0-SNAPSHOT"
-
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(21)
-}
+version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    mavenLocal()
-    gradlePluginPortal()
 
     maven("https://repo.papermc.io/repository/maven-public/")
-
-    maven {
-        name = "sonatype"
-        url = uri("https://oss.sonatype.org/content/groups/public/")
-    }
-
-    maven {
-        url = uri("https://jitpack.io")
-    }
-
-    maven {
-        url = uri("https://repo.dmulloy2.net/repository/public/")
-    }
-
-    maven {
-        url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    }
-
-    maven { url = uri("https://maven.enginehub.org/repo/") }
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://jitpack.io")
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.20.6-R0.1-SNAPSHOT")
-    compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
-    compileOnly("org.projectlombok:lombok:1.18.34")
+    paperweight.paperDevBundle("1.21.7-R0.1-SNAPSHOT")
     annotationProcessor("org.projectlombok:lombok:1.18.34")
+    compileOnly("org.projectlombok:lombok:1.18.34")
+    compileOnly("net.kyori:adventure-nbt:4.17.0")
     compileOnly("me.clip:placeholderapi:2.11.6")
-
+    implementation("org.mongodb:mongodb-driver-sync:5.5.1")
+    implementation("com.github.Revxrsal.Lamp:common:3.1.5")
+    implementation("com.github.Revxrsal.Lamp:bukkit:3.1.5")
 }
 
 tasks {
-
     assemble {
         dependsOn(reobfJar)
     }
@@ -56,14 +35,15 @@ tasks {
         options.encoding = "UTF-8"
         options.release.set(21)
     }
-    javadoc {
-        options.encoding = "UTF-8"
-    }
 
-    paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.REOBF_PRODUCTION
+    shadowJar {
+
+        archiveClassifier.set("dev") // This removes the -all suffix
+        archiveBaseName.set(project.name)
+    }
 
     reobfJar {
+        inputJar.set(shadowJar.flatMap { it.archiveFile })
         outputJar.set(layout.buildDirectory.file("libs/${project.name}-${project.version}.jar"))
     }
-
 }
