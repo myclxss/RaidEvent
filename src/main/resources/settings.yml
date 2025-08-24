@@ -1,4 +1,4 @@
-# Configuración original (mantener como está)
+# Configuración original (mantener como está para compatibilidad)
 BOSSBAR:
   TITLE: "&6&LRAID EVENT &7- &cPOINTS &8» &c%block_health%"
   COLOR: "BLUE"
@@ -24,6 +24,19 @@ MOB:
   SPAWN-TASK: 120
   TARGET-RANGE: 32.0    # Rango para detectar jugadores (bloques)
   FOLLOW-RANGE: 40.0    # Rango de seguimiento (bloques)
+
+# ================================
+# SISTEMA DE UBICACIONES MÚLTIPLES
+# ================================
+
+# Lista de ubicaciones donde pueden aparecer los núcleos
+# Cada oleada usará una ubicación diferente en orden rotativo
+# Formato: "mundo,x,y,z,yaw,pitch"
+CORE-LOCATIONS: []
+
+# Lista de ubicaciones donde aparecen los mobs
+# Formato: "mundo,x,y,z"
+SPAWN-LOCATIONS: []
 
 # ================================
 # SISTEMA DE OLEADAS
@@ -515,5 +528,3 @@ WAVES:
           - "SLOWNESS:5:240"
           - "BLINDNESS:3:160"
           - "NAUSEA:5:180"
-          -
-SPAWN-LOCATIONS: []

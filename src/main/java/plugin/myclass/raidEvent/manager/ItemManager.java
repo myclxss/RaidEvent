@@ -29,6 +29,43 @@ public class ItemManager {
                 .build();
     }
 
+    // Nuevas herramientas para núcleos
+    public ItemStack getCoreLocationAdder() {
+        return new ItemBuilder(Material.BREEZE_ROD)
+                .setName("&6&lADD CORE LOCATION")
+                .setLore("&eright click on a block to add core location")
+                .build();
+    }
+
+    public ItemStack getCoreLocationViewer() {
+        return new ItemBuilder(Material.BEACON)
+                .setName("&e&lVIEW CORE LOCATIONS")
+                .setLore("&eright click to show core cubes")
+                .build();
+    }
+
+    // Herramientas para región del evento
+    public ItemStack getRegionPos1Tool() {
+        return new ItemBuilder(Material.GOLDEN_AXE)
+                .setName("&e&lSET EVENT REGION POS1")
+                .setLore("&eright click on a block to set position 1")
+                .build();
+    }
+
+    public ItemStack getRegionPos2Tool() {
+        return new ItemBuilder(Material.GOLDEN_AXE)
+                .setName("&e&lSET EVENT REGION POS2")
+                .setLore("&eright click on a block to set position 2")
+                .build();
+    }
+
+    public ItemStack getRegionViewer() {
+        return new ItemBuilder(Material.RECOVERY_COMPASS)
+                .setName("&6&lVIEW EVENT REGION")
+                .setLore("&eright click to show event zone borders")
+                .build();
+    }
+
     public void setBlockEvent(Location location) {
         RaidEvent.getInstance().getSettings().set("BLOCK.LOCATION.X", location.getBlockX());
         RaidEvent.getInstance().getSettings().set("BLOCK.LOCATION.Y", location.getBlockY());
@@ -47,5 +84,23 @@ public class ItemManager {
 
     public boolean removeSpawnLocation(Location location) {
         return RaidEvent.getInstance().getSpawnLocationManager().removeNearestSpawnLocation(location);
+    }
+
+    // Nuevos métodos para núcleos
+    public void addCoreLocation(Location location) {
+        RaidEvent.getInstance().getCoreLocationManager().addCoreLocation(location);
+    }
+
+    public boolean removeCoreLocation(Location location) {
+        return RaidEvent.getInstance().getCoreLocationManager().removeNearestCoreLocation(location);
+    }
+
+    // Nuevos métodos para región
+    public void setRegionPos1(Location location) {
+        RaidEvent.getInstance().getRegionManager().setPos1(location);
+    }
+
+    public void setRegionPos2(Location location) {
+        RaidEvent.getInstance().getRegionManager().setPos2(location);
     }
 }

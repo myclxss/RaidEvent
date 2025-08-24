@@ -50,7 +50,9 @@ public class EventManager {
         // Obtener configuración de la primera oleada
         maxWaves = getMaxWavesFromConfig();
 
-        startWave(location);
+        // Usar la ubicación específica para la primera oleada
+        Location waveLocation = RaidEvent.getInstance().getCoreLocationManager().getLocationForWave(1);
+        startWave(waveLocation != null ? waveLocation : location);
 
         // Mensaje de inicio del evento
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -72,6 +74,17 @@ public class EventManager {
 
         RaidEvent.getInstance().getLogger().info("=== STARTING WAVE " + currentWave + " ===");
 
+        // Obtener la ubicación específica para esta oleada
+        Location waveLocation = RaidEvent.getInstance().getCoreLocationManager().getLocationForWave(currentWave);
+        if (waveLocation != null) {
+            location = waveLocation;
+            RaidEvent.getInstance().getLogger().info("Using core location " +
+                    (RaidEvent.getInstance().getCoreLocationManager().getCurrentLocationIndex() + 1) +
+                    " for wave " + currentWave);
+        } else {
+            RaidEvent.getInstance().getLogger().info("No core locations configured, using provided location");
+        }
+
         String wavePath = "WAVES.WAVE-" + currentWave;
 
         // Verificar que existe la configuración de la oleada
@@ -80,7 +93,7 @@ public class EventManager {
             return;
         }
 
-        // Configurar el bloque de la oleada
+        // Configurar el bloque de la oleada en la nueva ubicación
         setupRaidBlock(location, wavePath);
         setupBlockDisplay(location, wavePath);
         setupTextDisplay(location, wavePath);
@@ -107,10 +120,11 @@ public class EventManager {
         // Iniciar task de spawn de mobs cada 10 segundos
         startMobSpawnerTask(location);
 
-        // Anunciar inicio de oleada
-        announceWaveStart();
+        // Anunciar inicio de oleada con información de ubicación
+        announceWaveStart(location);
 
-        RaidEvent.getInstance().getLogger().info("=== WAVE " + currentWave + " STARTED SUCCESSFULLY ===");
+        RaidEvent.getInstance().getLogger().info("=== WAVE " + currentWave + " STARTED SUCCESSFULLY at " +
+                location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + " ===");
     }
 
     private void completeWave() {
@@ -149,7 +163,12 @@ public class EventManager {
         // Limpiar displays anteriores
         cleanupDisplays();
 
-        // Anunciar próxima oleada
+        // Obtener la próxima ubicación del núcleo
+        final Location nextLocation = RaidEvent.getInstance().getCoreLocationManager().getLocationForWave(currentWave);
+        final String locationInfo = nextLocation != null ?
+                " at " + nextLocation.getBlockX() + "," + nextLocation.getBlockY() + "," + nextLocation.getBlockZ() : "";
+
+        // Anunciar próxima oleada con información de ubicación
         for (Player player : Bukkit.getOnlinePlayers()) {
             TitleUtil.sendTitle(player,
                     ColorUtil.add(RaidEvent.getInstance().getLang().getString("WAVE-TRANSITION.TITLE")
@@ -162,6 +181,12 @@ public class EventManager {
                         .replace("%current_wave%", String.valueOf(currentWave - 1))
                         .replace("%next_wave%", String.valueOf(currentWave))));
             });
+
+            // Mensaje adicional con ubicación del núcleo
+            if (nextLocation != null) {
+                player.sendMessage(ColorUtil.add("&6⚡ El núcleo aparecerá en: &e" +
+                        nextLocation.getBlockX() + ", " + nextLocation.getBlockY() + ", " + nextLocation.getBlockZ()));
+            }
         }
 
         // Task de transición de 5 segundos
@@ -171,14 +196,19 @@ public class EventManager {
             @Override
             public void run() {
                 if (countdown <= 0) {
-                    RaidEvent.getInstance().getLogger().info("Transition countdown finished, starting wave " + currentWave);
+                    RaidEvent.getInstance().getLogger().info("Transition countdown finished, starting wave " + currentWave + locationInfo);
                     waveTransition = false;
-                    Location location = new Location(
-                            Bukkit.getWorld(RaidEvent.getInstance().getSettings().getString("BLOCK.LOCATION.WORLD")),
-                            RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.X"),
-                            RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.Y"),
-                            RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.Z")
-                    );
+
+                    // Usar la ubicación específica para la oleada o fallback
+                    Location location = nextLocation;
+                    if (location == null) {
+                        location = new Location(
+                                Bukkit.getWorld(RaidEvent.getInstance().getSettings().getString("BLOCK.LOCATION.WORLD")),
+                                RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.X"),
+                                RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.Y"),
+                                RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.Z")
+                        );
+                    }
                     startWave(location);
                     this.cancel();
                 } else {
@@ -196,6 +226,8 @@ public class EventManager {
     }
 
     private void completeEvent() {
+        RaidEvent.getInstance().getLogger().info("=== EVENT COMPLETED - SHOWING VICTORY ===");
+
         eventActive = false;
 
         // Mostrar top 3 jugadores
@@ -212,43 +244,66 @@ public class EventManager {
             });
         }
 
+        // Usar stopEvent para limpieza completa
         stopEvent();
     }
 
     public void stopEvent() {
+        RaidEvent.getInstance().getLogger().info("=== STOPPING RAID EVENT - FULL CLEANUP ===");
+
         eventActive = false;
         waveTransition = false;
         currentWave = 1;
 
+        // 1. LIMPIAR DISPLAYS Y BLOQUES
         cleanupDisplays();
 
+        // 2. LIMPIAR BOSSBAR COMPLETAMENTE
         if (bossBar != null) {
+            RaidEvent.getInstance().getLogger().info("Removing BossBar from all players");
             bossBar.removeAll();
             bossBar = null;
         }
 
-        if (mobSpawnerTask != null) {
+        // 3. CANCELAR TODAS LAS TAREAS
+        if (mobSpawnerTask != null && !mobSpawnerTask.isCancelled()) {
             mobSpawnerTask.cancel();
             mobSpawnerTask = null;
+            RaidEvent.getInstance().getLogger().info("Cancelled mob spawner task");
         }
 
-        if (waveTransitionTask != null) {
+        if (waveTransitionTask != null && !waveTransitionTask.isCancelled()) {
             waveTransitionTask.cancel();
             waveTransitionTask = null;
+            RaidEvent.getInstance().getLogger().info("Cancelled wave transition task");
         }
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            TitleUtil.sendTitle(player,
-                    RaidEvent.getInstance().getLang().getString("STOP-EVENT.TITLE"),
-                    RaidEvent.getInstance().getLang().getString("STOP-EVENT.SUBTITLE"),
-                    20, 40, 20);
-            RaidEvent.getInstance().getLang().getStringList("STOP-EVENT.MESSAGE").forEach(message -> {
-                player.sendMessage(ColorUtil.add(message));
-            });
-        }
-
+        // 4. REMOVER TODOS LOS MOBS
         RaidEvent.getInstance().getMobManager().removeSpawnedMobs();
+
+        // 5. DETENER TODAS LAS PARTÍCULAS
+        RaidEvent.getInstance().getSpawnLocationManager().stopParticleEffects();
+        RaidEvent.getInstance().getCoreLocationManager().stopParticleEffects();
+        RaidEvent.getInstance().getRegionManager().stopParticleEffects();
+        RaidEvent.getInstance().getLogger().info("Stopped all particle effects");
+
+        // 6. LIMPIAR DATOS DE JUGADORES
         playerDamage.clear();
+
+        // 7. MENSAJE A JUGADORES (solo si no es victoria)
+        if (eventActive || waveTransition) { // Si se detuvo manualmente
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                TitleUtil.sendTitle(player,
+                        RaidEvent.getInstance().getLang().getString("STOP-EVENT.TITLE"),
+                        RaidEvent.getInstance().getLang().getString("STOP-EVENT.SUBTITLE"),
+                        20, 40, 20);
+                RaidEvent.getInstance().getLang().getStringList("STOP-EVENT.MESSAGE").forEach(message -> {
+                    player.sendMessage(ColorUtil.add(message));
+                });
+            }
+        }
+
+        RaidEvent.getInstance().getLogger().info("=== RAID EVENT FULLY STOPPED AND CLEANED ===");
     }
 
     public void damageBlock(Player player) {
@@ -327,8 +382,10 @@ public class EventManager {
     }
 
     private void setupBlockDisplay(Location location, String wavePath) {
-        Location displayLocation = location.clone();
+        // Centrar exactamente en el bloque físico
+        Location displayLocation = location.clone().add(0, 0.0, 0);
         blockDisplay = displayLocation.getWorld().spawn(displayLocation, BlockDisplay.class);
+
         blockDisplay.setInvisible(true);
         blockDisplay.setInvulnerable(true);
         blockDisplay.setGlowing(true);
@@ -345,9 +402,14 @@ public class EventManager {
         String blockType = RaidEvent.getInstance().getSettings().getString(wavePath + ".TYPE", "GOLD_BLOCK");
         blockDisplay.setBlock(Bukkit.createBlockData(Material.valueOf(blockType)));
 
+        // Configurar transformación para que coincida exactamente con el bloque
         Transformation transformation = blockDisplay.getTransformation();
-        transformation.getScale().set(0.98f);
+        transformation.getScale().set(1.0f); // Tamaño completo, no 0.98f
+        transformation.getTranslation().set(0f, 0f, 0f); // Sin desplazamiento
         blockDisplay.setTransformation(transformation);
+
+        RaidEvent.getInstance().getLogger().info("BlockDisplay positioned at: " +
+                displayLocation.getX() + ", " + displayLocation.getY() + ", " + displayLocation.getZ());
     }
 
     private void setupTextDisplay(Location location, String wavePath) {
@@ -418,38 +480,69 @@ public class EventManager {
     }
 
     private void cleanupDisplays() {
-        RaidEvent.getInstance().getLogger().info("Cleaning up displays for wave transition");
+        RaidEvent.getInstance().getLogger().info("=== CLEANING UP ALL DISPLAYS AND ENTITIES ===");
 
+        // Limpiar bloque del núcleo
         if (raidBlock != null) {
             raidBlock.setType(Material.AIR);
             raidBlock = null;
+            RaidEvent.getInstance().getLogger().info("Removed raid block");
         }
 
+        // Remover display del bloque
         if (blockDisplay != null) {
             blockDisplay.remove();
             blockDisplay = null;
+            RaidEvent.getInstance().getLogger().info("Removed block display");
         }
 
+        // Remover display de texto
         if (textDisplay != null) {
             textDisplay.remove();
             textDisplay = null;
+            RaidEvent.getInstance().getLogger().info("Removed text display");
         }
 
-        // NUEVA: Limpiar BossBar anterior
+        // Limpiar BossBar (doble verificación)
         if (bossBar != null) {
-            RaidEvent.getInstance().getLogger().info("Removing previous BossBar from all players");
+            RaidEvent.getInstance().getLogger().info("Emergency cleanup: Removing BossBar from cleanupDisplays");
             bossBar.removeAll();
             bossBar = null;
         }
+
+        RaidEvent.getInstance().getLogger().info("=== ALL DISPLAYS CLEANED ===");
     }
 
     private void announceWaveStart() {
+        // Obtener ubicación actual del núcleo para mostrar en el mensaje
+        Location coreLocation = RaidEvent.getInstance().getCoreLocationManager().getCurrentLocation();
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             RaidEvent.getInstance().getLang().getStringList("WAVE-START.MESSAGE").forEach(message -> {
                 player.sendMessage(ColorUtil.add(message
                         .replace("%wave%", String.valueOf(currentWave))
                         .replace("%max_waves%", String.valueOf(maxWaves))));
             });
+
+            // Mensaje adicional con ubicación del núcleo
+            if (coreLocation != null) {
+                player.sendMessage(ColorUtil.add("&6⚡ Núcleo ubicado en: &e" +
+                        coreLocation.getBlockX() + ", " + coreLocation.getBlockY() + ", " + coreLocation.getBlockZ()));
+            }
+        }
+    }
+
+    private void announceWaveStart(Location location) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            RaidEvent.getInstance().getLang().getStringList("WAVE-START.MESSAGE").forEach(message -> {
+                player.sendMessage(ColorUtil.add(message
+                        .replace("%wave%", String.valueOf(currentWave))
+                        .replace("%max_waves%", String.valueOf(maxWaves))));
+            });
+
+            // Mensaje con ubicación específica del núcleo
+            player.sendMessage(ColorUtil.add("&6⚡ Núcleo ubicado en: &e" +
+                    location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ()));
         }
     }
 
@@ -547,12 +640,16 @@ public class EventManager {
         eventActive = true;
         waveTransition = false;
 
-        Location location = new Location(
-                Bukkit.getWorld(RaidEvent.getInstance().getSettings().getString("BLOCK.LOCATION.WORLD")),
-                RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.X"),
-                RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.Y"),
-                RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.Z")
-        );
+        // Usar la ubicación específica para la oleada forzada
+        Location location = RaidEvent.getInstance().getCoreLocationManager().getLocationForWave(wave);
+        if (location == null) {
+            location = new Location(
+                    Bukkit.getWorld(RaidEvent.getInstance().getSettings().getString("BLOCK.LOCATION.WORLD")),
+                    RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.X"),
+                    RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.Y"),
+                    RaidEvent.getInstance().getSettings().getInt("BLOCK.LOCATION.Z")
+            );
+        }
 
         startWave(location);
     }
